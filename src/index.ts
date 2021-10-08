@@ -12,10 +12,10 @@ const initFirebase = () => {
   try {
     core.info("Initialized Firebase Admin Connection");
     const credentials = core.getInput('credentials', isRequired);
-    const operation: string = core.getInput('operation', isRequired);
-    core.info(`Found operation: ${operation}`);
+    const op: string = core.getInput('operation', isRequired);
+    core.info(`Found operation: ${op}`);
     if (op == "read") {
-      core.info(`Confirm that op == "read": ${operation}`);
+      core.info(`Confirm that op == "read": ${op}`);
 
     }
     firebase = admin.initializeApp({
@@ -121,7 +121,7 @@ const processAction = () => {
   const databaseType = getDatabaseType();
   const path: string = core.getInput('path', isRequired);
   const op: string = core.getInput('operation', isRequired);
-  core.info(`Found operation: ${operation}`);
+  core.info(`Found operation: ${op}`);
 
   if (op == "read") {
       try {
