@@ -12,7 +12,7 @@ const initFirebase = () => {
   try {
     core.info("Initialized Firebase Admin Connection");
     const credentials = core.getInput('credentials', isRequired);
-    const op: string = core.getInput('operation', isRequired);
+    const op = core.getInput('operation', isRequired);
     core.info(`Found operation: ${op}`);
     if (op == "read") {
       core.info(`Confirm that op == "read": ${op}`);
