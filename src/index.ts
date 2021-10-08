@@ -12,7 +12,12 @@ const initFirebase = () => {
   try {
     core.info("Initialized Firebase Admin Connection");
     const credentials = core.getInput('credentials', isRequired);
+    const operation: string = core.getInput('operation', isRequired);
+    core.info(`Found operation: ${operation}`);
+    if (op == "read") {
+      core.info(`Confirm that op == "read": ${operation}`);
 
+    }
     firebase = admin.initializeApp({
       credential: admin.credential.cert(JSON.parse(credentials) as admin.ServiceAccount),
       databaseURL: core.getInput('databaseUrl')
@@ -115,10 +120,10 @@ const processAction = () => {
   initFirebase();
   const databaseType = getDatabaseType();
   const path: string = core.getInput('path', isRequired);
-  const operation: string = core.getInput('operation', isRequired);
+  const op: string = core.getInput('operation', isRequired);
   core.info(`Found operation: ${operation}`);
 
-  if (operation == "read") {
+  if (op == "read") {
       try {
         if (databaseType === 'realtime') {
           getRealtimeDatabaseValue(path);
@@ -129,7 +134,7 @@ const processAction = () => {
         process.exit(core.ExitCode.Failure);
       }
   }
-  if (operation == "write") {
+  if (op == "write") {
     try {
         const value = getValue();
 
