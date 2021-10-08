@@ -44,4 +44,6 @@ You should store the Service Account JSON into a secret on your repo. Also, this
 
 
 ### Development
-Use > node 14
+- Use > node 14
+- `npm install`, make any changes to `src/index.ts`
+- Build with `npm run build && npm run pack`, commit and push all resulting files
