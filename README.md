@@ -1,8 +1,10 @@
-# Firebase Trigger Github Action
+# Firebase Operations
 
-This action allows you to set values into your firebase database (`realtime` or `firestore`) from and based on your current build.
+This action allows you to: 
+- Set values into your firebase database (`realtime` or `firestore`) from and based on your current build.
+- Retrieve a value from realtime DB and set as output for subsequent step logic.
 
-I call it trigger because of what this allows you to do. Firebase has extensive tools allowing you to setup functionally that happens when you do things in your database. Weather it is a Cloud Function, Pub Sub, or just a notification on a website used by your users.
+Build inspired by https://github.com/w9jds/firebase-trigger.git
 
 ## Inputs
 
@@ -12,10 +14,11 @@ I call it trigger because of what this allows you to do. Firebase has extensive 
 * `path` - **Required** Path to the field you want to modify. If you are using firestore, this is the collection path.
 * `doc` - **Required for Firestore** Document you want to modify. Uses set, so it will write/overwrite the whole file.
 * `value` - **Optional** Value you would like to set. Defaults to `Date.now()` timestamp. If you are using Firestore this MUST be a JSON Object.
+* `operation` - "read"
 
 ## Usage
 
-Writes to a realtime database, and sets the lastRelease to a `Date.now()` timestamp.
+For "write" operation: Writes to a realtime database, and sets the lastRelease to a `Date.now()` timestamp.
 
 ```yaml
 notify:
@@ -31,6 +34,10 @@ notify:
         path: version/lastRelease
 ```
 
+For "read" operation: Retrieves value and sets output as `retrievedValue` which can be used in subsequent steps - e.g. `${{ steps.whatever-step-id.outputs.retrievedValue }}`
+
 ### Recommendation
 
 You should store the Service Account JSON into a secret on your repo. Also, this can be very powerful if you start passing outputs from other jobs into this one to write values.
+
+

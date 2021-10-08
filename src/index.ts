@@ -15,7 +15,7 @@ const initFirebase = () => {
 
     firebase = admin.initializeApp({
       credential: admin.credential.cert(JSON.parse(credentials) as admin.ServiceAccount),
-      databaseURL: core.getInput('databaseUrl'),
+      databaseURL: core.getInput('databaseUrl')
     });
   } catch(error) {
     core.setFailed(JSON.stringify(error));
@@ -74,6 +74,22 @@ const updateRealtimeDatabase = async (path: string, value: any) => {
     );
 }
 
+const getRealtimeDatabaseValue = async (path: string) => {
+  await firebase.database()
+  .ref(path)
+  .on('value', (snapshot) => {
+    console.log(snapshot.val());
+    core.setOutput("retrievedValue", snapshot.val());
+    process.exit(core.ExitCode.Success);
+
+  }, (error) => {
+    console.log('The read failed: ' + error.name);
+    core.setFailed(JSON.stringify(error));
+    process.exit(core.ExitCode.Failure);
+  }); 
+
+}
+
 const updateFirestoreDatabase = (path: string, value: Record<string, any>) => {
   const document = core.getInput('doc', isRequired);
 
@@ -95,22 +111,36 @@ const updateFirestoreDatabase = (path: string, value: Record<string, any>) => {
 
 const processAction = () => {
   initFirebase();
+  const databaseType = getDatabaseType();
+  const path: string = core.getInput('path', isRequired);
+  const operation: string = core.getInput('operation');
+  if (operation == "read") {
+      try {
+        if (databaseType === 'realtime') {
+          getRealtimeDatabaseValue(path);
+        }
+      } 
+      catch(error) {
+        core.setFailed(JSON.stringify(error));
+        process.exit(core.ExitCode.Failure);
+      }
+  }
+  else {
+    try {
+        const value = getValue();
 
-  try {
-    const databaseType = getDatabaseType();
-    const path: string = core.getInput('path', isRequired);
-    const value = getValue();
-
-    if (databaseType === 'realtime') {
-      updateRealtimeDatabase(path, value);
-    }
-
-    if (databaseType === 'firestore') {
-      updateFirestoreDatabase(path, value);
-    }
-  } catch(error) {
-    core.setFailed(JSON.stringify(error));
-    process.exit(core.ExitCode.Failure);
+        if (databaseType === 'realtime') {
+          updateRealtimeDatabase(path, value);
+        }
+    
+        if (databaseType === 'firestore') {
+          updateFirestoreDatabase(path, value);
+        }
+      } 
+    catch(error) {
+        core.setFailed(JSON.stringify(error));
+        process.exit(core.ExitCode.Failure);
+      }
   }
 }
 
