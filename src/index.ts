@@ -87,7 +87,7 @@ const getRealtimeDatabaseValue = async (path: string) => {
   .on('value', (snapshot) => {
     const valueOfRead = snapshot.val();
     console.log(valueOfRead ?? "no value found");
-    core.setOutput("retrievedValue", snapshot.val());
+    core.setOutput("retrievedValue", JSON.stringify(valueOfRead));
     process.exit(core.ExitCode.Success);
 
   }, (error: any) => {
