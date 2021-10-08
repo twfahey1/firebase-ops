@@ -85,11 +85,12 @@ const getRealtimeDatabaseValue = async (path: string) => {
   await firebase.database()
   .ref(path)
   .on('value', (snapshot) => {
-    console.log(snapshot.val());
+    const valueOfRead = snapshot.val()! as string | undefined;
+    console.log(valueOfRead ?? "no value found");
     core.setOutput("retrievedValue", snapshot.val());
     process.exit(core.ExitCode.Success);
 
-  }, (error) => {
+  }, (error: any) => {
     console.log('The read failed: ' + error.name);
     core.setFailed(JSON.stringify(error));
     process.exit(core.ExitCode.Failure);
