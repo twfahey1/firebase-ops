@@ -75,6 +75,8 @@ const updateRealtimeDatabase = async (path: string, value: any) => {
 }
 
 const getRealtimeDatabaseValue = async (path: string) => {
+  core.info(`Reading Realtime Database at ${path}`);
+
   await firebase.database()
   .ref(path)
   .on('value', (snapshot) => {
