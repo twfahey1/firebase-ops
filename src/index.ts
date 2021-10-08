@@ -115,7 +115,9 @@ const processAction = () => {
   initFirebase();
   const databaseType = getDatabaseType();
   const path: string = core.getInput('path', isRequired);
-  const operation: string = core.getInput('operation');
+  const operation: string = core.getInput('operation', isRequired);
+  core.info(`Found operation: ${operation}`);
+
   if (operation == "read") {
       try {
         if (databaseType === 'realtime') {
@@ -127,7 +129,7 @@ const processAction = () => {
         process.exit(core.ExitCode.Failure);
       }
   }
-  else {
+  if (operation == "write") {
     try {
         const value = getValue();
 

@@ -20,6 +20,7 @@ inputs:
     description: Value to be set
   operation:
     description: Either read or write
+    default: write
 branding:
   icon: 'activity'
   color: 'gray-dark'
