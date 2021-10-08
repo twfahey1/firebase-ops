@@ -32,6 +32,8 @@ notify:
         credentials: ${{ secrets.FIREBASE_CREDENTIALS }}
         databaseUrl: https://[project_id].firebaseio.com
         path: version/lastRelease
+        operation: read | write
+        value: "some data from other step"
 ```
 
 For "read" operation: Retrieves value and sets output as `retrievedValue` which can be used in subsequent steps - e.g. `${{ steps.whatever-step-id.outputs.retrievedValue }}`
