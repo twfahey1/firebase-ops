@@ -18,6 +18,8 @@ inputs:
     description: Document to set for firestore
   value:
     description: Value to be set
+  operation:
+    description: Either read or write
 branding:
   icon: 'activity'
   color: 'gray-dark'
