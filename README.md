@@ -36,7 +36,7 @@ notify:
         value: "some data from other step"
 ```
 
-For "read" operation: Retrieves value and sets output as `retrievedValue` which can be used in subsequent steps - e.g. `${{ steps.whatever-step-id.outputs.retrievedValue }}`
+For "read" operation: Retrieves value and sets output as `retrievedValue` which can be used in subsequent steps - e.g. `${{ steps.whatever-step-id.outputs.retrievedValue }}`. The output is a JSON string.
 
 ### Recommendation
 
