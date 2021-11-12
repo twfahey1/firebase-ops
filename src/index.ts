@@ -80,7 +80,7 @@ const updateRealtimeDatabase = async (path: string, value: any) => {
 }
 
 const deleteValFromRealtimeDatabase = async (path: string) => {
-  core.info(`Updating Realtime Database at ${path}`);
+  core.info(`Deleting from Realtime Database at ${path}`);
 
   await firebase.database()
     .ref(path)
@@ -140,6 +140,7 @@ const processAction = () => {
   const path: string = core.getInput('path', isRequired);
   const op: string = core.getInput('operation', isRequired);
   core.info(`Found operation: ${op}`);
+  core.info(`So going to do operation: ${op}`);
 
   if (op == "read") {
       try {
