@@ -79,6 +79,23 @@ const updateRealtimeDatabase = async (path: string, value: any) => {
     );
 }
 
+const deleteValFromRealtimeDatabase = async (path: string) => {
+  core.info(`Updating Realtime Database at ${path}`);
+
+  await firebase.database()
+    .ref(path)
+    .set(null,
+      error => {
+        if (error instanceof Error) {
+          core.setFailed(JSON.stringify(error));
+          process.exit(core.ExitCode.Failure);
+        }
+
+        process.exit(core.ExitCode.Success);
+      }
+    );
+}
+
 const getRealtimeDatabaseValue = async (path: string) => {
   core.info(`Reading Realtime Database at ${path}`);
 
@@ -151,6 +168,18 @@ const processAction = () => {
         core.setFailed(JSON.stringify(error));
         process.exit(core.ExitCode.Failure);
       }
+  }
+  if (op == "delete") {
+    try {
+      if (databaseType === 'realtime') {
+        deleteValFromRealtimeDatabase(path);
+      }
+    } 
+  catch(error) {
+      core.setFailed(JSON.stringify(error));
+      process.exit(core.ExitCode.Failure);
+    }
+    
   }
 }
 
