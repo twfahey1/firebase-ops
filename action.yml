@@ -1,5 +1,5 @@
-name: Firebase Ops
-description: Update or read from a field in your firebase database
+name: Firebase CRUD Ops
+description: CRUD operations against a Firebase DB.
 author: Jeremy Shore, Tyler Fahey
 inputs:
   credentials:
